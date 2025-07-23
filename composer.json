@@ -1,0 +1,7 @@
+{
+    "name": "electromart/api",
+    "description": "ElectroMart API",
+    "require": {
+        "php": ">=7.4"
+    }
+}
