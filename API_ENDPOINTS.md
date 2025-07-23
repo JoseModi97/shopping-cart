@@ -85,34 +85,26 @@ To get the user's profile information, send a `GET` request to `/api/profile`.
 
 ### Update user profile
 
-To update the user's profile information, send a `PUT` request to `/api/profile`.
+To update the user's profile information, send a `POST` request to `/api/profile` with `multipart/form-data`.
 
 ### Request Body
 
-The request body must be a JSON object with the following parameters:
-
 | Parameter | Type   | Description                  |
 | --------- | ------ | ---------------------------- |
-| `name`    | object | The user's name.             |
+| `name`    | string | The user's name.             |
 | `phone`   | string | The user's phone number.     |
-| `address` | object | The user's address.          |
+| `address` | string | The user's address.          |
+| `image`   | file   | (Optional) The user's profile image. |
 
 **Example:**
 
-```json
-{
-  "name": {
-    "first": "Test",
-    "last": "User"
-  },
-  "phone": "123-456-7890",
-  "address": {
-    "street": "123 Main St",
-    "city": "Anytown",
-    "state": "CA",
-    "zip": "12345"
-  }
-}
+```bash
+curl -X POST -H "Authorization: Bearer <token>" \
+-F "name=Test User" \
+-F "phone=123-456-7890" \
+-F "address=123 Main St" \
+-F "image=@/path/to/image.jpg" \
+http://localhost:8000/api/profile
 ```
 
 ### Responses
@@ -213,6 +205,38 @@ To place an order, send a `POST` request to `/api/orders`.
   ```
 
 ## Products
+
+### Create a new product
+
+To create a new product, send a `POST` request to `/api/products` with `multipart/form-data`.
+
+### Request Body
+
+| Parameter   | Type   | Description                  |
+| ----------- | ------ | ---------------------------- |
+| `name`      | string | The product's name.          |
+| `description` | string | The product's description.   |
+| `price`     | float  | The product's price.         |
+| `category`  | string | The product's category.      |
+| `stock`     | integer| The product's stock quantity.|
+| `image`     | file   | (Optional) The product's image. |
+
+**Example:**
+
+```bash
+curl -X POST \
+-F "name=Test Product" \
+-F "description=This is a test product." \
+-F "price=99.99" \
+-F "category=Electronics" \
+-F "stock=100" \
+-F "image=@/path/to/image.jpg" \
+http://localhost:8000/api/products
+```
+
+### Responses
+
+- **201 Created:** The product was successfully created. The response body will contain the created product object.
 
 ### Get all products
 

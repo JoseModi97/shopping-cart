@@ -64,8 +64,9 @@ The API will be available at `http://localhost:8000`.
 -   `POST /api/auth/register`
 -   `POST /api/auth/login`
 -   `GET /api/profile`
--   `PUT /api/profile`
+-   `POST /api/profile`
 -   `GET /api/products`
+-   `POST /api/products`
 -   `GET /api/products/:id`
 -   `GET /api/cart`
 -   `POST /api/cart`
