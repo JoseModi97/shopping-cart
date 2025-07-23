@@ -1,5 +1,5 @@
 <?php
-$db = new SQLite3('electromart.db');
+$db = new SQLite3(__DIR__ . '/electromart.db');
 
 $db->exec("CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -8,7 +8,8 @@ $db->exec("CREATE TABLE IF NOT EXISTS users (
     password TEXT NOT NULL,
     name TEXT,
     phone TEXT,
-    address TEXT
+    address TEXT,
+    image_url TEXT
 )");
 
 $db->exec("CREATE TABLE IF NOT EXISTS products (
