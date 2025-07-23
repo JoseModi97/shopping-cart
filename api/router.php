@@ -22,6 +22,15 @@ function handle_request() {
         handle_order_routes($method, $endpoint);
     } elseif (strpos($endpoint, '/api/ai') === 0) {
         handle_ai_routes($method, $endpoint);
+    } elseif (strpos($endpoint, '/api/uploads/') === 0) {
+        $filepath = __DIR__ . str_replace('/api', '', $endpoint);
+        if (file_exists($filepath)) {
+            header('Content-Type: ' . mime_content_type($filepath));
+            readfile($filepath);
+        } else {
+            http_response_code(404);
+            echo json_encode(['error' => 'File not found']);
+        }
     } else {
         http_response_code(404);
         echo json_encode(['error' => 'Not Found']);

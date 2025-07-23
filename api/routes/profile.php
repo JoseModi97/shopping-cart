@@ -28,16 +28,34 @@ function handle_profile_routes($method, $endpoint) {
 
         header('Content-Type: application/json');
         echo json_encode($user);
-    } elseif ($method === 'PUT' && $endpoint === '/api/profile') {
-        $data = json_decode(file_get_contents('php://input'), true);
-        $stmt = $db->prepare('UPDATE users SET name = :name, phone = :phone, address = :address WHERE id = :id');
-        $stmt->bindValue(':name', json_encode($data['name']));
-        $stmt->bindValue(':phone', $data['phone']);
-        $stmt->bindValue(':address', json_encode($data['address']));
-        $stmt->bindValue(':id', $user_id);
+    } elseif ($method === 'POST' && $endpoint === '/api/profile') {
+        $name = $_POST['name'];
+        $phone = $_POST['phone'];
+        $address = $_POST['address'];
+        $image_url = null;
+
+        if (isset($_FILES['image'])) {
+            $target_dir = __DIR__ . '/../uploads/';
+            $target_file = $target_dir . basename($_FILES['image']['name']);
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+                $image_url = '/api/uploads/' . basename($_FILES['image']['name']);
+            }
+        }
+
+        if ($image_url) {
+            $stmt = $db->prepare('UPDATE users SET name = :name, phone = :phone, address = :address, image_url = :image_url WHERE id = :id');
+            $stmt->bindValue(':image_url', $image_url, SQLITE3_TEXT);
+        } else {
+            $stmt = $db->prepare('UPDATE users SET name = :name, phone = :phone, address = :address WHERE id = :id');
+        }
+
+        $stmt->bindValue(':name', $name, SQLITE3_TEXT);
+        $stmt->bindValue(':phone', $phone, SQLITE3_TEXT);
+        $stmt->bindValue(':address', $address, SQLITE3_TEXT);
+        $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
         $stmt->execute();
 
-        $stmt = $db->prepare('SELECT id, username, email, name, phone, address FROM users WHERE id = :id');
+        $stmt = $db->prepare('SELECT id, username, email, name, phone, address, image_url FROM users WHERE id = :id');
         $stmt->bindValue(':id', $user_id);
         $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
