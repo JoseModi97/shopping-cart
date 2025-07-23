@@ -17,7 +17,8 @@ $db->exec("CREATE TABLE IF NOT EXISTS products (
     description TEXT,
     price REAL NOT NULL,
     category TEXT,
-    stock INTEGER
+    stock INTEGER,
+    image_url TEXT
 )");
 
 $db->exec("CREATE TABLE IF NOT EXISTS cart (
