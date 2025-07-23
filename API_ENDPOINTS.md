@@ -97,6 +97,8 @@ The request body must be a JSON object with the following parameters:
 | `phone`   | string | The user's phone number.     |
 | `address` | object | The user's address.          |
 
+**Note:** The `name` and `address` fields are stored as JSON strings in the database.
+
 **Example:**
 
 ```json
@@ -157,14 +159,14 @@ The request body must be a JSON object with the following parameters:
 
 | Parameter   | Type    | Description                  |
 | ----------- | ------- | ---------------------------- |
-| `variantId` | integer | The ID of the product variant. |
+| `productId` | integer | The ID of the product. |
 | `quantity`  | integer | The quantity to add.         |
 
 **Example:**
 
 ```json
 {
-  "variantId": 1,
+  "productId": 1,
   "quantity": 1
 }
 ```
@@ -231,7 +233,8 @@ To get a list of all products, send a `GET` request to `/api/products`.
       "name": "Product Name",
       "description": "Product description.",
       "price": 99.99,
-      "image_url": "https://example.com/product.jpg"
+      "category": "Electronics",
+      "stock": 100
     }
   ]
   ```
@@ -252,7 +255,8 @@ To get a single product by its ID, send a `GET` request to `/api/products/{produ
     "name": "Product Name",
     "description": "Product description.",
     "price": 99.99,
-    "image_url": "https://example.com/product.jpg"
+    "category": "Electronics",
+    "stock": 100
   }
   ```
 
